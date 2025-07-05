@@ -6,20 +6,27 @@ using UnityEngine.UI;
 
 public class HeroCard : MonoBehaviour
 {
-    [SerializeField] private int heroID;
+    [SerializeField] public int heroID;
     [SerializeField] private TextMeshProUGUI levelTxt;
     [SerializeField] private TextMeshProUGUI healthTxt;
+    [SerializeField] private TextMeshProUGUI mpTxt;
     [SerializeField] private Image heroImg;
+    [SerializeField] public Image redNotiDot;
     public UpgradeView upgradeView; 
     public GameObject heroCardview;
-    public void SetData(int heroID,UpgradeView upgradeView,GameObject heroCardView,int level,int health,Sprite heroSprite)
+    public void SetData(int heroID,UpgradeView upgradeView,GameObject heroCardView,int level,int health,
+        int mp,Sprite heroSprite)
     {
         this.heroID = heroID;
         this.upgradeView = upgradeView;
         this.heroCardview = heroCardView;
         levelTxt.text = LocalizationManager.instance.GetLocalizedText("level_title") + " " +level.ToString();
         healthTxt.text = health.ToString();
+        mpTxt.text = mp.ToString();
         heroImg.sprite = heroSprite;
+      //  redNotiDot.gameObject.SetActive(NewBoughtHeroManager.instance.IsNewHero(heroID));
+
+
     }
     public void OnClickHeroCard()
     {
@@ -47,6 +54,18 @@ public class HeroCard : MonoBehaviour
         upgradeView.currentID = heroID;
         upgradeView.SetUpgradeView(currentData, nextData);
         heroCardview.SetActive(false);
+        //if (NewBoughtHeroManager.instance.IsNewHero(heroID))
+        //{
+        //    NewBoughtHeroManager.instance.RemoveHero(heroID);
+        //    redNotiDot.gameObject.SetActive(false);
+
+        //    if (NewBoughtHeroManager.instance.AllSeen())
+        //    {
+        //        NotiManager.instance.ClearMultipleNotiRedDots(new List<string> { "upgrade", "enhance" });
+        //    }
+        //}
+
+
     }
 
     public void SetHeroInfo(DataHero hero)
@@ -54,5 +73,6 @@ public class HeroCard : MonoBehaviour
         heroID = hero.id;
         levelTxt.text = $"Lv. {hero.level}";
         healthTxt.text = $"HP: {hero.hp}";
+       
     }
 }
